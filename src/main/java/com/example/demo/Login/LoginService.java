@@ -25,4 +25,8 @@ public class LoginService {
         return user.getPassword().equals(password);
     }
 
+    public void addUser(Users user) {
+        repositoryUsers.save(user);
+    }
+
 }

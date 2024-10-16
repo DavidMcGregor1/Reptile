@@ -34,6 +34,27 @@ public class LoginController {
         return loginService.getAllUsers();
     }
 
+    @PostMapping("/signup")
+    @ResponseBody
+    public String signup(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "password") String password) {
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
+
+        Users user = new Users(username, password);
+        loginService.addUser(user);
+
+        // move this logic out of the controller and into the service
+
+        return "success";
+    }
+
+    @GetMapping("/accountCreated")
+    public String accountCreated() {
+        return "AccountCreated";
+    }
+
     @PostMapping("/login")
     @ResponseBody
     public String login(
