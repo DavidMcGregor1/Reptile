@@ -1,4 +1,4 @@
-package com.example.demo.Repositories;
+package com.example.demo.Login;
 
 import jakarta.persistence.*;
 

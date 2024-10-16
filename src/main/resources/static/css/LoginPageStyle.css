@@ -94,3 +94,13 @@ button:hover {
 .small-button:hover {
     color: #2E8E39;
 }
+
+#login-error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}

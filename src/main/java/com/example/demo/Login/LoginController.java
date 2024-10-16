@@ -1,18 +1,12 @@
 package com.example.demo.Login;
 
-import com.example.demo.Repositories.Users;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,34 +26,26 @@ public class LoginController {
         return "LoginPage";
     }
 
+
+    @GetMapping("/getAllUsers")
+    @ResponseBody
+    public List<Users> fds() {
+        System.out.println("hit endpoinbt");
+        return loginService.getAllUsers();
+    }
+
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody Map<String, String> loginData) {
-        String username = loginData.get("username");
-        String password = loginData.get("password");
+    @ResponseBody
+    public String login(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "password") String password) {
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
 
-        Map<String, Object> response = new HashMap<>();
         if (loginService.checkUser(username, password)) {
-            String jwt = generateJWT(username);
-            response.put("token", jwt);
-            response.put("status", "success");
+            return "success";
         } else {
-            response.put("status", "failure");
-            response.put("message", "Invalid username or password");
+            return "fail";
         }
-        return response;
     }
-
-    private String generateJWT(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
-
-        Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 hour expiration
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(expiration)
-                .signWith(secretKey)
-                .compact();
-    }
-
 }

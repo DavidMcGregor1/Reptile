@@ -19,30 +19,31 @@ document.getElementById('toggle-button').addEventListener('click', function() {
     }
 });
 
-document.getElementById('login-form').addEventListener('click', function(event) {
-    console.log('login-form');
+const errorElement = document.getElementById('loginError');
+errorElement.classList.add('hidden');
+
+document.getElementById('submit-button').addEventListener('click', function(event) {
     event.preventDefault();
 
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
 
-    var loginData = {
-        username: username,
-        password: password
-    };
+    var loginData = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
 
     var xhr = new XMLHttpRequest();
 
     xhr.open('POST', '/login', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            window.location.href = '/dashboard';
-        } else {
-            alert('Invalid username or password');
+            if (xhr.responseText === 'success') {
+                window.location.href = '/dashboard';
+            } else {
+                errorElement.classList.remove('hidden');
+            }
         }
     };
+    xhr.send(loginData);
+});
 
-
-}

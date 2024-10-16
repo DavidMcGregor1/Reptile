@@ -1,4 +1,4 @@
-package com.example.demo.Views;
+package com.example.demo.Login;
 
 public class UsersView {
     public int id;
