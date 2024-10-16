@@ -18,3 +18,31 @@ document.getElementById('toggle-button').addEventListener('click', function() {
         toggleButton.textContent = 'Sign Up';
     }
 });
+
+document.getElementById('login-form').addEventListener('click', function(event) {
+    console.log('login-form');
+    event.preventDefault();
+
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    var loginData = {
+        username: username,
+        password: password
+    };
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/login', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            window.location.href = '/dashboard';
+        } else {
+            alert('Invalid username or password');
+        }
+    };
+
+
+}

@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.microsoft.sqlserver:mssql-jdbc:11.2.0.jre8">
+  <library name="Gradle: com.microsoft.sqlserver:mssql-jdbc:11.2.0.jre8" external-system-id="GRADLE">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microsoft.sqlserver/mssql-jdbc/11.2.0.jre8/a0ed87a18d9738b2a74d72f1974daf464891a3c4/mssql-jdbc-11.2.0.jre8.jar!/" />
     </CLASSES>

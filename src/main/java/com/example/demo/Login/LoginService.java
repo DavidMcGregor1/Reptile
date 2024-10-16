@@ -18,4 +18,12 @@ public class LoginService {
         return repositoryUsers.findAll();
     }
 
+    public boolean checkUser(String username, String password) {
+        Users user = repositoryUsers.findByUsername(username).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        return user.getPassword().equals(password);
+    }
+
 }
