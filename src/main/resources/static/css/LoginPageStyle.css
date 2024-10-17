@@ -96,7 +96,7 @@ button:hover {
     color: #2E8E39;
 }
 
-#invalid-username-error-message, #username-exists-error-message, #passwords-do-not-match-error-message, #field-cannot-be-empty-error-error-message {
+#invalid-username-error-message, #username-exists-error-message, #passwords-do-not-match-error-message, #field-cannot-be-empty-error-message, #password-not-long-enough-message  {
     color: red;
     font-size: 18px;
     margin-top: 10px;

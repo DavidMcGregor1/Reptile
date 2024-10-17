@@ -1,26 +1,3 @@
-document.getElementById('toggle-button').addEventListener('click', function() {
-
-    removeErrorMessageIfExists();
-
-    var formTitle = document.getElementById('form-title');
-    var confirmPasswordGroup = document.getElementById('confirm-password-group');
-    var submitButton = document.getElementById('submit-button');
-    var toggleButton = document.getElementById('toggle-button');
-
-    if (formTitle.textContent === 'Login') {
-        // Switch to Sign Up
-        formTitle.textContent = 'Sign Up';
-        confirmPasswordGroup.style.display = 'block';
-        submitButton.textContent = 'Sign Up';
-        toggleButton.textContent = 'Login';
-    } else {
-        // Switch to Login
-        formTitle.textContent = 'Login';
-        confirmPasswordGroup.style.display = 'none';
-        submitButton.textContent = 'Login';
-        toggleButton.textContent = 'Sign Up';
-    }
-});
 
 const invalidUsernameError = document.getElementById('invalid-username-error-container');
 invalidUsernameError.classList.add('hidden');
@@ -34,6 +11,31 @@ passwordsDoNotMatchError.classList.add('hidden');
 const fieldCannotBeEmptyError = document.getElementById('field-cannot-be-empty-error-container');
 fieldCannotBeEmptyError.classList.add('hidden');
 
+const passwordNotLongEnoughError = document.getElementById('password-not-long-enough-container');
+passwordNotLongEnoughError.classList.add('hidden');
+
+
+document.getElementById('toggle-button').addEventListener('click', function() {
+
+    removeErrorMessageIfExists();
+
+    var formTitle = document.getElementById('form-title');
+    var confirmPasswordGroup = document.getElementById('confirm-password-group');
+    var submitButton = document.getElementById('submit-button');
+    var toggleButton = document.getElementById('toggle-button');
+
+    if (formTitle.textContent === 'Login') {
+        formTitle.textContent = 'Sign Up';
+        confirmPasswordGroup.style.display = 'block';
+        submitButton.textContent = 'Sign Up';
+        toggleButton.textContent = 'Login';
+    } else {
+        formTitle.textContent = 'Login';
+        confirmPasswordGroup.style.display = 'none';
+        submitButton.textContent = 'Login';
+        toggleButton.textContent = 'Sign Up';
+    }
+});
 
 
 document.getElementById('submit-button').addEventListener('click', function(event) {
@@ -48,15 +50,7 @@ document.getElementById('submit-button').addEventListener('click', function(even
         var password = document.getElementById('password').value;
         var confirmPassword = document.getElementById('confirm-password').value;
 
-        if (username === "" || password === "") {
-            fieldCannotBeEmptyError.classList.remove('hidden');
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            passwordsDoNotMatchError.classList.remove('hidden');
-            return;
-        }
+        validateCredentials();
 
         var signUpData = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
         var xhr = new XMLHttpRequest();
@@ -67,14 +61,12 @@ document.getElementById('submit-button').addEventListener('click', function(even
             if (xhr.status === 200) {
                 console.log("200 returned");
                 try {
-                    // Parse the JSON response from the server
                     var response = JSON.parse(xhr.responseText);
 
                     if (response.success) {
                         console.log("success, should now redirect to a welcome page");
                         window.location.href = '/accountCreated'; // Redirect to a welcome page after successful sign-up
                     } else {
-                        // Check for specific error types and display appropriate messages
                         if (response.errorType && response.errorType === "USER_ALREADY_EXISTS") {
                             userExistsError.classList.remove('hidden');
                         } else {
@@ -90,7 +82,7 @@ document.getElementById('submit-button').addEventListener('click', function(even
             }
         };
 
-        xhr.send(signUpData); // Send signup data
+        xhr.send(signUpData);
     }
 
     // --------- LOGIN ----------
@@ -120,7 +112,7 @@ document.getElementById('submit-button').addEventListener('click', function(even
             }
         };
 
-        xhr.send(loginData); // Send login data
+        xhr.send(loginData);
     }
 });
 
@@ -140,4 +132,26 @@ function removeErrorMessageIfExists() {
     if (!fieldCannotBeEmptyError.classList.contains('hidden')) {
         fieldCannotBeEmptyError.classList.add('hidden');
     }
+
+    if (!passwordNotLongEnoughError.classList.contains('hidden')) {
+        passwordNotLongEnoughError.classList.add('hidden');
+    }
 }
+
+function validateCredentials() {
+    if (username === "" || password === "") {
+        fieldCannotBeEmptyError.classList.remove('hidden');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        passwordsDoNotMatchError.classList.remove('hidden');
+        return;
+    }
+
+    if (password.length < 8) {
+        passwordNotLongEnoughError.classList.remove('hidden');
+        return;
+    }
+}
+
