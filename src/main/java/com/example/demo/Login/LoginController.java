@@ -41,26 +41,22 @@ public class LoginController {
             @RequestParam(name = "username") String username,
             @RequestParam(name = "password") String password) {
 
-        System.out.println("hit signup");
+        return loginService.signup(username, password);
 
-        SignUpResponseDto response = new SignUpResponseDto();
-
-        if (loginService.checkIfUserExists(username)) {
-            System.out.println("user already exists");
-            response.success = false;
-            response.setErrorType(Optional.of(ErrorType.USER_ALREADY_EXISTS));
-            return response;// Wrap the error in Optional
-        }
-
-        System.out.println("user does not already exist");
-
-        Users user = new Users(username, password);
-        loginService.addUser(user);
-
-        response.success = true;
-        response.setErrorType(Optional.empty());
-
-        return response;
+//        SignUpResponseDto response = new SignUpResponseDto();
+//
+//        if (loginService.checkIfUserExists(username)) {
+//            response.success = false;
+//            response.setErrorType(Optional.of(ErrorType.USER_ALREADY_EXISTS));
+//            return response;
+//        }
+//
+//        loginService.createNewUser(username, password);
+//
+//        response.success = true;
+//        response.setErrorType(Optional.empty());
+//
+//        return response;
     }
 
     @GetMapping("/accountCreated")

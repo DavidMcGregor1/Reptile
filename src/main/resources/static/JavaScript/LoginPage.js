@@ -50,7 +50,20 @@ document.getElementById('submit-button').addEventListener('click', function(even
         var password = document.getElementById('password').value;
         var confirmPassword = document.getElementById('confirm-password').value;
 
-        validateCredentials();
+            if (username === "" || password === "") {
+                fieldCannotBeEmptyError.classList.remove('hidden');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                passwordsDoNotMatchError.classList.remove('hidden');
+                return;
+            }
+
+            if (password.length < 8) {
+                passwordNotLongEnoughError.classList.remove('hidden');
+                return;
+            }
 
         var signUpData = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
         var xhr = new XMLHttpRequest();
@@ -137,21 +150,3 @@ function removeErrorMessageIfExists() {
         passwordNotLongEnoughError.classList.add('hidden');
     }
 }
-
-function validateCredentials() {
-    if (username === "" || password === "") {
-        fieldCannotBeEmptyError.classList.remove('hidden');
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        passwordsDoNotMatchError.classList.remove('hidden');
-        return;
-    }
-
-    if (password.length < 8) {
-        passwordNotLongEnoughError.classList.remove('hidden');
-        return;
-    }
-}
-
