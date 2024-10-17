@@ -1,4 +1,7 @@
 document.getElementById('toggle-button').addEventListener('click', function() {
+
+    removeErrorMessageIfExists();
+
     var formTitle = document.getElementById('form-title');
     var confirmPasswordGroup = document.getElementById('confirm-password-group');
     var submitButton = document.getElementById('submit-button');
@@ -19,57 +22,88 @@ document.getElementById('toggle-button').addEventListener('click', function() {
     }
 });
 
-const errorElement = document.getElementById('loginError');
-errorElement.classList.add('hidden');
+const invalidUsernameError = document.getElementById('invalid-username-error-container');
+invalidUsernameError.classList.add('hidden');
+
+const userExistsError = document.getElementById('username-exists-error-container');
+userExistsError.classList.add('hidden');
+
+const passwordsDoNotMatchError = document.getElementById('passwords-do-not-match-error-container');
+passwordsDoNotMatchError.classList.add('hidden');
+
+const fieldCannotBeEmptyError = document.getElementById('field-cannot-be-empty-error-container');
+fieldCannotBeEmptyError.classList.add('hidden');
+
+
 
 document.getElementById('submit-button').addEventListener('click', function(event) {
     const formTitle = document.getElementById('form-title');
     event.preventDefault();
 
-    // --------- SIGN UP ----------
+    removeErrorMessageIfExists();
 
+    // --------- SIGN UP ----------
     if (formTitle.textContent === 'Sign Up') {
-        console.log("here")
         var username = document.getElementById('username').value;
         var password = document.getElementById('password').value;
         var confirmPassword = document.getElementById('confirm-password').value;
-        console.log(username, password, confirmPassword)
+
+        if (username === "" || password === "") {
+            fieldCannotBeEmptyError.classList.remove('hidden');
+            return;
+        }
 
         if (password !== confirmPassword) {
-          alert('Passwords do not match');
-          return;
+            passwordsDoNotMatchError.classList.remove('hidden');
+            return;
         }
 
         var signUpData = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/signup', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/signup', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        console.log("200 returned")
-                        if (xhr.responseText === 'success') {
-                        console.log("success, should now redirect to a welcome page")
-                            window.location.href = '/accountCreated'; // Redirect to a welcome page after successful sign-up
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log("200 returned");
+                try {
+                    // Parse the JSON response from the server
+                    var response = JSON.parse(xhr.responseText);
+
+                    if (response.success) {
+                        console.log("success, should now redirect to a welcome page");
+                        window.location.href = '/accountCreated'; // Redirect to a welcome page after successful sign-up
+                    } else {
+                        // Check for specific error types and display appropriate messages
+                        if (response.errorType && response.errorType === "USER_ALREADY_EXISTS") {
+                            userExistsError.classList.remove('hidden');
                         } else {
                             alert('Sign up failed. Please try again.');
                         }
                     }
-                };
-                console.log("about to send: ", signUpData)
-                xhr.send(signUpData); // Send signup data
+                } catch (e) {
+                    console.error('Error parsing JSON response:', e);
+                    alert('An error occurred. Please try again.');
+                }
+            } else {
+                alert('An error occurred during sign up. Please try again.');
+            }
+        };
+
+        xhr.send(signUpData); // Send signup data
     }
 
-    if (formTitle.textContent === 'Login') {
-
-
     // --------- LOGIN ----------
-
+    if (formTitle.textContent === 'Login') {
         var username = document.getElementById('username').value;
         var password = document.getElementById('password').value;
 
-        var loginData = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
+        if (username === "" || password === "") {
+            fieldCannotBeEmptyError.classList.remove('hidden');
+            return;
+        }
 
+        var loginData = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
         var xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/login', true);
@@ -78,15 +112,32 @@ document.getElementById('submit-button').addEventListener('click', function(even
         xhr.onload = function() {
             if (xhr.status === 200) {
                 if (xhr.responseText === 'success') {
-                    console.log("we are in here")
+                    console.log("we are in here");
                     window.location.href = '/dashboard';
                 } else {
-                    errorElement.classList.remove('hidden');
+                    invalidUsernameError.classList.remove('hidden');
                 }
             }
         };
-     xhr.send(loginData);
 
-   }
+        xhr.send(loginData); // Send login data
+    }
 });
 
+function removeErrorMessageIfExists() {
+    if (!invalidUsernameError.classList.contains('hidden')) {
+        invalidUsernameError.classList.add('hidden');
+    }
+
+    if (!userExistsError.classList.contains('hidden')) {
+        userExistsError.classList.add('hidden');
+    }
+
+    if (!passwordsDoNotMatchError.classList.contains('hidden')) {
+        passwordsDoNotMatchError.classList.add('hidden');
+    }
+
+    if (!fieldCannotBeEmptyError.classList.contains('hidden')) {
+        fieldCannotBeEmptyError.classList.add('hidden');
+    }
+}

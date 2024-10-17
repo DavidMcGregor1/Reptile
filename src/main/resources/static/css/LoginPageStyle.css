@@ -11,7 +11,7 @@ body {
 }
 
 /* Login Container */
-.login-container {
+.login-container, .signup-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,7 @@ body {
 }
 
 /* Login Box */
-.login-box {
+.login-box, .signup-box {
     background-color: #333;
     padding: 40px;
     border-radius: 8px;
@@ -29,7 +29,7 @@ body {
 }
 
 /* Form Title */
-.login-box h1 {
+.login-box h1, .signup-box h1 {
     margin-bottom: 20px;
     color: #39B54A;
 }
@@ -90,14 +90,15 @@ button:hover {
     cursor: pointer;
     transition: color 0.3s;
 }
+}
 
 .small-button:hover {
     color: #2E8E39;
 }
 
-#login-error-message {
+#invalid-username-error-message, #username-exists-error-message, #passwords-do-not-match-error-message, #field-cannot-be-empty-error-error-message {
     color: red;
-    font-size: 14px;
+    font-size: 18px;
     margin-top: 10px;
 }
 

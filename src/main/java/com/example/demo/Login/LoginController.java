@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.SecretKey;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -36,18 +37,30 @@ public class LoginController {
 
     @PostMapping("/signup")
     @ResponseBody
-    public String signup(
+    public SignUpResponseDto signup(
             @RequestParam(name = "username") String username,
             @RequestParam(name = "password") String password) {
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
+
+        System.out.println("hit signup");
+
+        SignUpResponseDto response = new SignUpResponseDto();
+
+        if (loginService.checkIfUserExists(username)) {
+            System.out.println("user already exists");
+            response.success = false;
+            response.setErrorType(Optional.of(ErrorType.USER_ALREADY_EXISTS));
+            return response;// Wrap the error in Optional
+        }
+
+        System.out.println("user does not already exist");
 
         Users user = new Users(username, password);
         loginService.addUser(user);
 
-        // move this logic out of the controller and into the service
+        response.success = true;
+        response.setErrorType(Optional.empty());
 
-        return "success";
+        return response;
     }
 
     @GetMapping("/accountCreated")

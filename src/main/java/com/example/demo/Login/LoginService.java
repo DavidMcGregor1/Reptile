@@ -29,4 +29,8 @@ public class LoginService {
         repositoryUsers.save(user);
     }
 
+    public boolean checkIfUserExists(String username) {
+        return repositoryUsers.findByUsername(username).isPresent();
+    }
+
 }
