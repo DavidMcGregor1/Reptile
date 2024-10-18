@@ -1,52 +1,82 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gym Tracker Dashboard</title>
-  <link rel="stylesheet" href="css/dashboard.css">
+  <title>Reptile</title>
+  <link rel="stylesheet" href="css/Dashboard.css">
 </head>
+
 <body>
-<div class="dashboard-container">
-  <header class="dashboard-header">
-    <h1>Welcome, [Client Name]!</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Workouts</a></li>
-        <li><a href="#">Nutrition</a></li>
-        <li><a href="#">Progress</a></li>
-        <li><a href="#">Settings</a></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav>
+    <div class="logo">Reptile</div>
+    <ul class="nav-links">
+      <li><a href="#home-section" id="home-tab" class="active">Home</a></li>
+      <li><a href="#workouts" id="workouts-tab">Workouts</a></li>
+      <li><a href="#account-section" id="account-tab">Account</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <div class="dashboard-content">
-    <section class="quick-stats">
-      <div class="stat-box">
-        <h2>Today's Workout</h2>
-        <p>Leg Day</p>
-      </div>
-      <div class="stat-box">
-        <h2>Calories Burned</h2>
-        <p>650 kcal</p>
-      </div>
-      <div class="stat-box">
-        <h2>Active Days</h2>
-        <p>4/7</p>
-      </div>
-    </section>
 
-    <section class="workout-summary">
-      <h2>Latest Workout</h2>
-      <div class="workout-details">
-        <div class="exercise">
-          <h3>Squats</h3>
-          <p>4 sets of 12 reps</p>
+<main>
+  <section id="home-section" class="active">
+    <div class="header-container">
+      <h1>This week</h1>
+    </div>
+
+    <div class="boxes-container">
+      <div class="goals-container">
+        <div class="goals">
+          <div class="goals-header-container">
+            <h2 class="box-header">Goals:</h2>
+          </div>
+
+          <div class="goal-text-container">
+            <p>d</p>
+            <p>d</p>
+            <p>d</p>
+          </div>
+
+          <div class="edit-goals-button-container">
+            <button id="edit-goals-btn" class="secondary-btn">Edit Goals</button>
+          </div>
+
         </div>
-        <div class="exercise">
-          <h3>Deadlifts</h3>
-          <p>3 sets of 10 reps</p>
+        <div class="buttons-container">
+          <button id="new-workout-btn" class="main-btn">+ New Workout</button>
+          <button id="view-workouts-btn" class="secondary-btn">View Workouts</button>
         </div>
-        <div class="exercise">
-          <h3>Leg Press</h3>
-          <p>4 sets of 15 reps</
+      </div>
+      <div class="activity">
+        <h2 class="box-header">Activity:</h2>
+      </div>
+    </div>
+
+
+
+  </section>
+
+
+
+  <section id="workouts">
+    <h1>Your Workouts</h1>
+  </section>
+
+
+
+  <section id="account-section">
+    <h1>Your Account</h1>
+  </section>
+</main>
+
+
+
+<script src="JavaScript/Dashboard.js"></script>
+
+</body>
+
+</html>
